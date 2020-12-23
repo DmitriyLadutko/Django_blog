@@ -37,3 +37,6 @@ $ python manage.py createsuperuser
 ```sh
 python manage.py runserver
 ```
+Пара скриншотов будет не лишним
+![Image alt](https://github.com/{Antipositive}/{screenshots}/raw/{main}/{{Django_blog/screenshots/}/Снимок экрана от 2020-12-23 16-46-55.png)
+
