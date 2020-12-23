@@ -1,0 +1,72 @@
+<head>
+    <title>Detail post page</title>
+    <style>
+    ul {
+        text-align: left;
+        margin: 0 auto;
+        font-family: aakar, cursive;
+
+    }
+    h4 p{
+        font-family: small, sans-serif;
+    }
+    .container{
+
+        font-family: Arial, fantasy;
+    }
+</style>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h4>
+            {% block title %}
+            <p class="small" >Article title: {{ get_article.title }}</p>
+            <p class="small">Date of writing the article: {{ get_article.create_date }}</p>
+            <p class="small">Author article: {{ get_article.author }}</p>
+            <p class="small">Article views - ({{ get_article.count_view }})</p>
+            <p class="small">Number of "I like" marks - ({{ get_article.liked.count }})</p>
+             <form action="{% url "like-post" %}" method="post" class="ui form">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ get_article.id }}">
+                    {% if user not in get_article.liked.all %}
+                    <button class="btn btn-primary" type="submit">like</button>
+                    {% else %}
+                    <button class="btn btn-primary" type="submit">Unlike</button>
+                    {% endif %}
+             </form>
+            {% endblock title %}</h4>
+          <div id="container"> Text post</div>
+            <p class="card-text ">{{ get_article.body }}</p>
+            <p>Post comments ({{ get_article.comment_article.all.count }})</p>
+      <hr>
+        <ul>
+    {% for comment in get_article.comment_article.all %}
+    <div class="comments">
+    <p class="info">
+    Comment data: {{ comment.create_date }}<br>
+    Comment author: {{ comment.author }}<br>
+    Status: {{ comment.moderation }}
+    Comment text: {{ comment.text_comment |linebreaks }}<br><br>
+</p>
+</div>
+<div class="comments"></div>
+        {% endfor %}
+        </ul>
+      <p>Create comment</p>
+      <div class="nav-link">
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a class="btn btn-primary" href="{% url 'home' %}"> Back</a>
+      </form>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}

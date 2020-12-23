@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="" xmlns="">
+    <head>
+        <title>My posts</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <meta name="google" content="notranslate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous" />
+    </head>
+    <body>
+        <style>
+            body {
+            font-family: "Roboto", sans-serif;
+            font-size: 17px;
+            background-color: #fdfdfd;
+        }
+        .shadow {
+            box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+        }
+        .btn-danger {
+            color: #fff;
+            background-color: #f00000;
+            border-color: #dc281e;
+        }
+        .masthead {
+            background: #87cefa;
+            height: auto;
+            padding-bottom: 15px;
+            box-shadow: 0 16px 48px #E3E7EB;
+            padding-top: 10px;
+        }
+    </style>
+<header class="masthead">
+    <div class="popover"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-12 col-lg-offset-5 my-sm-0">
+                <div class="site-heading">
+                    <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to the add new post page </h3>
+                    <p class="text-light">Stay online &nbsp;
+                        <ul class="nav nav-pills">
+                          <li class="nav-item">
+                                {% url 'home' as url_home %}
+                                <a class="nav-link {% if url_home == request.path %} active {% endif %}" href="{{ url_home }}"> Main page </a>
+                          </li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<br>
+<div class="container">
+    <br class="nav nav-pills">
+    {% for post in posts %}
+    <tb>
+    <p>Author - {{ post.author }}</p>
+    <br>
+    <p>Title - {{ post.title }}</p>
+    <br/>
+    </tb>
+    <a href=" {% url 'detail_page' post.pk %} " class="nav-link">Read More &raquo;</a>
+    <a href="{% url 'update' post.pk %}" class="nav-link">Edit post</a>
+{% endfor %}
+</div>
