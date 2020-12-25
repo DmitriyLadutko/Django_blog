@@ -27,6 +27,9 @@
             <p class="small" >Article title: {{ get_article.title }}</p>
             <p class="small">Date of writing the article: {{ get_article.create_date }}</p>
             <p class="small">Author article: {{ get_article.author }}</p>
+            <p class="small">Category article: {{ get_article.category }}</p>
+
+
             <p class="small">Article views - ({{ get_article.count_view }})</p>
             <p class="small">Number of "I like" marks - ({{ get_article.liked.count }})</p>
              <form action="{% url "like-post" %}" method="post" class="ui form">

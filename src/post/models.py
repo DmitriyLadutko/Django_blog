@@ -5,6 +5,18 @@ LIKE_CHOICES = (('Like', 'Like'),
                 ('Unlike', 'Unlike'))
 
 
+class Category(models.Model):
+    name = models.CharField('Category', max_length=150)
+    description = models.TextField()
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+
 class Article(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255, verbose_name='Title post')
@@ -13,6 +25,9 @@ class Article(models.Model):
                                blank=True)
     liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
     count_view = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    draft = models.BooleanField(default=False)
+    year = models.PositiveSmallIntegerField(default=2020)
 
     class Meta:
         verbose_name = "Post"

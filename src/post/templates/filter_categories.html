@@ -36,11 +36,11 @@
                             <li class="nav-item">
                                 {% url 'edit_page' as url_edit_page %}
                             <a class="nav-link {% if 'edit_page' == request.path %} active {% endif %}" href="{{ url_edit_page }}">Creation | Editing | Deleting  </a>
-                            <li class="nav-item">
                             {% url 'get_author_article' as author_articles %}
                             <a class="nav-link" href="{{ author_articles }}"> My articles </a>
-                          </li>
+
                      </li>
+
       <li class="nav-item">
         {% url 'exit_page' as url_exit_page %}
     <a class="nav-link " href="{{ url_exit_page }}">Exit </a>
@@ -81,12 +81,13 @@
         </ul>
     </div>
     <button type="submit">Find</button>
+    </div>
 </form>
 
     <div class="container">
         <div class="row">
         <div class="col-md-8 mt-3 left">
-            {% for post in list_article %}
+            {% for post in filter %}
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
@@ -103,6 +104,7 @@
                             {% endif %}
                         </form>
                         <div>{{ post.liked.count }}Likes</div>
+
                 </div>
             </div>
             {% endfor %}

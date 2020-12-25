@@ -1,14 +1,13 @@
 from .models import Article, Comment
-from django.forms import ModelForm, TextInput, Textarea
+from django.forms import ModelForm, TextInput, Textarea, HiddenInput
 
 
 class ArticleForms(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'body']
+        fields = ['title', 'body', 'category', 'year']
         widgets = {'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'input title'}),
-                   'body': Textarea(attrs={'class': 'form-control', 'placeholder': 'input text post'}),
-                   }
+                   'body': Textarea(attrs={'class': 'form-control', 'placeholder': 'input text post'})}
 
 
 class CommentForm(ModelForm):

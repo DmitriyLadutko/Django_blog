@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormMixin
@@ -6,7 +7,17 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import ArticleForms, CommentForm
-from .models import Article, Like
+from .models import Article, Like, Category
+
+
+class GetCategory:
+    @staticmethod
+    def get_categories():
+        return Category.objects.all()
+
+    @staticmethod
+    def get_year():
+        return Article.objects.filter().values('year').distinct()
 
 
 class AuthorArticleView(ListView):
@@ -21,10 +32,11 @@ class EditPageView(ListView):
     context_object_name = 'post_list'
 
 
-class HomeListView(ListView):
+class HomeListView(GetCategory, ListView):
     model = Article
     template_name = 'home_page.html'
     context_object_name = 'list_article'
+    queryset = Article.objects.filter(draft=False)
 
 
 class HomeDetailView(FormMixin, DetailView):
@@ -72,6 +84,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
 
 
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
+    """Реализация редактирования статей"""
     login_url = reverse_lazy('login_page')
     model = Article
     template_name = 'update_form.html'
@@ -94,6 +107,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
+    """Реализация удаления статей"""
     model = Article
     template_name = 'edit_page.html'
     success_url = reverse_lazy('edit_page')
@@ -123,6 +137,7 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class LikeView(ListView):
+    """Возможность ставить Like и убирать его, некая защита от накрутки"""
     model = Like
 
     def post(self, request, *args, **kwargs):
@@ -143,3 +158,17 @@ class LikeView(ListView):
                     like.value = 'Like'
             like.save()
         return redirect('home')
+
+
+class CategoriesPostFilterView(GetCategory, ListView):
+    """ Фильтрация постов по категориям и или годам"""
+    model = Article
+    template_name = 'home_page.html'
+    context_object_name = 'list_article'
+
+    def get_queryset(self):
+        """Вот здесь есть ORM а именно lookup """
+        queryset = Article.objects.filter(Q(year__in=self.request.GET.getlist("year")) |
+                                          Q(category__in=self.request.GET.getlist("category"))
+                                          )
+        return queryset
