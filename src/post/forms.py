@@ -1,5 +1,5 @@
 from .models import Article, Comment
-from django.forms import ModelForm, TextInput, Textarea, HiddenInput
+from django.forms import ModelForm, TextInput, Textarea
 
 
 class ArticleForms(ModelForm):
