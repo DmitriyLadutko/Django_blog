@@ -2,6 +2,8 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+from post.models import Profile
+
 
 class AuthUserForm(AuthenticationForm, ModelForm):
     class Meta:
@@ -26,3 +28,9 @@ class RegistrationUserForm(ModelForm):
         if commit:
             user.save()
         return user
+
+
+class ProfileEditForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('date_of_birth', 'age', 'bio')

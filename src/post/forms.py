@@ -1,4 +1,4 @@
-from .models import Article, Comment
+from .models import Article, Comment, Profile
 from django.forms import ModelForm, TextInput, Textarea
 
 
@@ -20,3 +20,10 @@ class CommentForm(ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
             self.fields['text_comment'].widget = Textarea(attrs={"rows": 3})
+
+
+class EditProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+

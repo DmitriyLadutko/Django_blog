@@ -34,28 +34,27 @@
  <div class="container">
         <div class="row">
         <div class="col-md-8 mt-3 left">
-            {% for post in posts %}
+
+            {% for post in profile %}
             <div class="card mb-4">
                 <div class="card-body">
-                    <h2 class="card-title">{{ post.title }}</h2>
-                    <p class="card-text text-muted h6">{{ post.create_date}} </p>
-                    <p class="card-text">{{post.body|truncatechars:"20" }}</p>
-                    <a href=" {% url 'detail_page' post.pk %} " class="nav-link">Read More &raquo;</a>
-                        <form action="{% url "like-post" %}" method="post" class="ui form">
-                        {% csrf_token %}
-                            <input type="hidden" name="post_id" value="{{ post.id }}">
-                            {% if user not in post.liked.all %}
-                                <button class="btn btn-primary" type="submit">like</button>
-                            {% else %}
-                                <button class="btn btn-primary" type="submit">Unlike</button>
-                            {% endif %}
-                        </form>
-                        <div>{{ post.liked.count }}Likes</div>
+                    <h2 class="card-title">Date of Birth: {{ post.user.username }}</h2>
+                    <h2 class="card-title">Date of Birth: {{ post.date_of_birth }}</h2>
+                    <h2 class="card-title">Age: {{ post.age }}</h2>
+                    <h2 class="card-title">Short description: {{ post.bio }}</h2>
+                    <h2 class="card-title">Country: {{ post.country }}</h2>
+                    <h2 class="card-title">Gender: {{ post.gender }}</h2>
+                    {% if post.avatar %}
+                        <img src="{{ post.avatar.url }}" alt="">
+                    {% else %}
+                        <p></p>
+                    {% endif %}
+                        {% endfor %}
+                        <a href="{% url 'update_profile' %}" class="top-menu">
+                            <span class="glyphicon glyphicon-plus">Update profile</span></a>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
-
 {%endblock%}

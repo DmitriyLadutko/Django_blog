@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xmlns="">
-
     <head>
-        <title>Login page</title>
+        <title>Update post page</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,7 +9,6 @@
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
             crossorigin="anonymous" />
     </head>
-
     <body>
         <style>
             body {
@@ -34,14 +32,13 @@
             padding-top: 10px;
         }
     </style>
-
 <header class="masthead">
     <div class="popover"></div>
     <div class="container">
         <div class="row">
             <div class=" col-md-12 col-lg-offset-5 my-sm-0">
                 <div class="site-heading">
-                    <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to the add new post page </h3>
+                    <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to the add new update page </h3>
                     <p class="text-light">Stay online &nbsp;
                 </div>
             </div>
@@ -51,11 +48,19 @@
 <br>
 <div class="container">
     <ul class="nav nav-pills">
-        <form id="add_form" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button form="add_form" type="submit" class="btn btn-primary mt-4">Login</button>
-        <a href="{% url "home" %}" class="btn btn-primary mt-4"> Come back &laquo;</a>
-        </form>
+    <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+
+                {{ form.date_of_birth }}
+                AGE {{ form.age }}
+                {{ form.bio }}
+                {{ form.country }}
+                {{ form.avatar }}
+                        {% csrf_token %}
+
+                <input type="submit">
+                    <a class="btn btn-primary" href="{% url 'profile' %}"> Back</a>
+      </form>
+        <li class="nav-item">
+      </li>
     </ul>
 </div>
