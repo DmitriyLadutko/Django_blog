@@ -1,9 +1,7 @@
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic.edit import FormMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
@@ -13,6 +11,16 @@ from .forms import ArticleForms, CommentForm, EditProfileForm
 from .models import Article, Like, GetCategory, Profile
 
 
+@login_required
+def edit_profile(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    form = EditProfileForm(request.POST or None, instance=profile)
+    if form.is_valid():
+        form.save()
+        return redirect('profile')
+    return render(request, "update_profile.html", {'form': form})
+
+
 class ProfileList(ListView):
     model = Profile
     template_name = 'Profile.html'
@@ -20,18 +28,6 @@ class ProfileList(ListView):
 
     def get_queryset(self):
         return Profile.objects.filter(user=self.request.user)
-
-
-class UpdateProfile(UpdateView):
-    model = Profile
-    template_name = 'update_profile.html'
-    form_class = EditProfileForm
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def get_success_url(self):
-        return reverse('user_detail', args=[self.request.user.username])
 
 
 class AuthorArticleView(ListView):

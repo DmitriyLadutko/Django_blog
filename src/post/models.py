@@ -1,32 +1,40 @@
+from datetime import date
+
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.urls import reverse
+
+COUNTRY_CHOICES = (('BELARUS', 'BEL'),
+                   ('RUSSIA', 'RUS'),
+                   ('UKRAINE', 'UK'),
+                   ('POLAND', 'PL'),
+                   ('LITHUANIA', 'LT'))
 
 LIKE_CHOICES = (('Like', 'Like'),
                 ('Unlike', 'Unlike'))
 
 GENDER_CHOICES = (('male', 'male'),
-                  ('female', 'female'))
+                  ('female', 'female'),
+                  ('european gender', 'european gender'))
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    age = models.PositiveSmallIntegerField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
-    avatar = models.ImageField(upload_to='users/%Y/%m/%d', blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True, choices=COUNTRY_CHOICES)
+    gender = models.CharField(max_length=50, choices=GENDER_CHOICES, blank=True, null=True)
+    avatar = models.ImageField(upload_to='media/', blank=True, null=True)
 
-    def __str__(self):
-        return f'{self.user.username}'
-
-    def get_absolute_url(self):
-        return reverse('profile', kwargs={'name': self.user.usetname})
+    def calculate_age(self):
+        today = date.today()
+        born = self.date_of_birth
+        if today and born:
+            return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+        return f'please input Date of Birth'
 
 
 @receiver(post_save, sender=User)

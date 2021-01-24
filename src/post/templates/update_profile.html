@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xmlns="">
     <head>
-        <title>Update post page</title>
+        <title>Update profile page</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
         <meta name="google" content="notranslate" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,21 +46,22 @@
     </div>
 </header>
 <br>
+        {% block content %}
+
 <div class="container">
     <ul class="nav nav-pills">
-    <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
-
-                {{ form.date_of_birth }}
-                AGE {{ form.age }}
-                {{ form.bio }}
-                {{ form.country }}
-                {{ form.avatar }}
-                        {% csrf_token %}
-
-                <input type="submit">
-                    <a class="btn btn-primary" href="{% url 'profile' %}"> Back</a>
-      </form>
+    <form method="POST" enctype="multipart/form-data" action="." novalidate>
+                {% csrf_token %}
+                <p>You avatar: {{ form.avatar }}</p>
+                <p>You date of birth: {{ form.date_of_birth }}</p>
+                <p>You biography: {{ form.bio }}</p>
+                <p>You country: {{ form.country }}</p>
+                <p>You gender: {{ form.gender }}</p>
+        <input type="submit" value="Update profile">
+        <a class="btn" href="{% url 'profile' %}"> Back</a>
+    </form>
         <li class="nav-item">
       </li>
     </ul>
 </div>
+{% endblock %}

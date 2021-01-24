@@ -1,11 +1,13 @@
 from .models import Article, Comment, Profile
+from django.forms.widgets import DateInput
+
 from django.forms import ModelForm, TextInput, Textarea
 
 
 class ArticleForms(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'body', 'category', 'year']
+        fields = ['title', 'body', 'category']
         widgets = {'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'input title'}),
                    'body': Textarea(attrs={'class': 'form-control', 'placeholder': 'input text post'})}
 
@@ -25,5 +27,6 @@ class CommentForm(ModelForm):
 class EditProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
-
+        fields = ['avatar', 'date_of_birth', 'country', 'gender', 'bio']
+        widgets = {'bio': Textarea(attrs={'class': 'form-control', 'placeholder': 'input your short description'}),
+                   'date_of_birth': DateInput(attrs={'type': 'date'})}

@@ -9,10 +9,9 @@ class AdminArticle(admin.ModelAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'date_of_birth', 'age', 'bio', 'id']
+    list_display = ['user', 'date_of_birth', 'bio', 'id']
 
 
 admin.site.register(Profile, ProfileAdmin)
-
 admin.site.register(Like)
 admin.site.register(Category)
