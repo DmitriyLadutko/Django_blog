@@ -1,4 +1,5 @@
 from datetime import date
+from django_countries.fields import CountryField  # Прикрутил батарейку со странами
 
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
@@ -6,12 +7,6 @@ from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-COUNTRY_CHOICES = (('BELARUS', 'BEL'),
-                   ('RUSSIA', 'RUS'),
-                   ('UKRAINE', 'UK'),
-                   ('POLAND', 'PL'),
-                   ('LITHUANIA', 'LT'))
 
 LIKE_CHOICES = (('Like', 'Like'),
                 ('Unlike', 'Unlike'))
@@ -25,7 +20,7 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True, choices=COUNTRY_CHOICES)
+    country = CountryField(blank_label='Select country...')
     gender = models.CharField(max_length=50, choices=GENDER_CHOICES, blank=True, null=True)
     avatar = models.ImageField(upload_to='media/', blank=True, null=True)
 
